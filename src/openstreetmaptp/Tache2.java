@@ -5,7 +5,6 @@
  */
 package openstreetmaptp;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -13,27 +12,19 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.openstreetmap.gui.jmapviewer.Coordinate;
-import org.openstreetmap.gui.jmapviewer.MapMarkerCircle;
 
 /**
  *
- * @author aqueyroi
+ * @author Adrien
  */
-public class Tache implements ActionListener{
+public class Tache2 implements ActionListener{
     
     long t1;
-    Joueur monJoueur;
     
-    public Tache(){
+    public Tache2(){
         this.t1 = System.currentTimeMillis();
     }
     
-    public Tache(Joueur unJoueur){
-        this.t1 = System.currentTimeMillis();
-        this.monJoueur = unJoueur;
-    }
-   
     public void actionPerformed(ActionEvent e){
         
         System.out.println(System.currentTimeMillis()-t1);
@@ -43,19 +34,14 @@ public class Tache implements ActionListener{
 
             Connection connexion = DriverManager.getConnection("jdbc:mysql://nemrod.ens2m.fr:3306/2017_s2_tp1", "2017_s2_tp1", "3K5HbSW4xz5cBFSY");
 
-            PreparedStatement requete = connexion.prepareStatement("SELECT pseudo, latitude, longitude FROM Joueur;");
+            PreparedStatement requete = connexion.prepareStatement("SELECT pseudo FROM Joueur WHERE nb_parties_jouees = '1'");
             ResultSet resultat = requete.executeQuery();
             
-            OpenStreetMapTP.MaCarte.ClearMap();
             while (resultat.next()) {
                 String pseudo = resultat.getString("pseudo");
-                double latitude = resultat.getDouble("latitude");
-                double longitude = resultat.getDouble("longitude");
-                
-                OpenStreetMapTP.MaCarte.AjouteMarker(latitude, longitude, pseudo);
+                OpenStreetMapTP.LeSalon.ajouteJoueur(pseudo);
             }
-            
-            OpenStreetMapTP.MonJoueur.setCoordonnnes();
+
             requete.close();
             connexion.close();
 
@@ -63,4 +49,5 @@ public class Tache implements ActionListener{
             ex.printStackTrace();
         }
     }
+    
 }

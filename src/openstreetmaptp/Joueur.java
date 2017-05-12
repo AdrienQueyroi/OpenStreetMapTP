@@ -35,6 +35,14 @@ public class Joueur {
         this.longitude = longitude;
     }
     
+    public void setLatitudeAdd(double dy) {
+        this.latitude += dy;
+    }
+
+    public void setLongitudeAdd(double dx) {
+        this.longitude += dx;
+    }
+    
     public void setCoordonnnes(){
         try {
 
